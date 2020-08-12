@@ -6,12 +6,18 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# yarn.lock
+yarn.lock
+
 # Dependency directories
 node_modules/
 
 # dotenv environment variables file
 .env
 .env.test
+
+# intellij env
+.idea
 
 # data
 data
