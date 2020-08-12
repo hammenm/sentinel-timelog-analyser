@@ -1,0 +1,31 @@
+{
+  "name": "analyzer-personnal-tasks",
+  "version": "1.0.0",
+  "scripts": {
+    "download": "cross-env NODE_PATH=. babel-node src/download/main.js",
+    "generate": "cross-env NODE_PATH=. babel-node src/generate/main.js",
+    "lint": "eslint src",
+    "prettier": "prettier --write src/**/*.js"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "dotenv": "^8.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.5",
+    "graphql": "^15.3.0",
+    "graphql-request": "^3.0.0",
+    "graphql-tag": "^2.11.0",
+    "json2csv": "^5.0.1",
+    "moment": "^2.27.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5"
+  }
+}
