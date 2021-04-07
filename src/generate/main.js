@@ -21,7 +21,11 @@ const convertRowToDurationHours = (row, field) => {
   return moment.duration(duration).asHours();
 };
 
-const convertRowToProject = row => {
+const convertRowDescription = (row) => {
+  return row?.description?.replace(/\n/g, ' ');
+};
+
+const convertRowToProject = (row) => {
   const { description } = row;
   if (!description) {
     return 'Unlabelled';
@@ -38,7 +42,7 @@ const fields = [
     value: convertRowToDurationHours,
     default: 0,
   },
-  'description',
+  { label: 'description', value: convertRowDescription },
   { label: 'project', value: convertRowToProject },
 ];
 
