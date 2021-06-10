@@ -1,95 +1,88 @@
-export const convertDescriptionToProject = (descriptionRaw) => {
-  const description = descriptionRaw.toLowerCase();
-
-  if (description.includes('luxinnovation')) {
-    return 'Luxinnovation';
-  }
-  if (description.includes('sentinel')) {
-    return 'Sentinel';
-  }
-  if (description.includes('hypno')) {
-    return 'Hypno';
-  }
-  if (description.includes('bocal') || description.includes('fdb')) {
-    return 'LFDB';
-  }
-  if (description.includes('squeeze') || description.includes('cracké')) {
-    return 'Cracké';
-  }
-  if (description.includes('nächst statioun')) {
-    return 'Nächst Statioun';
-  }
-  if (description.includes('recrutement')) {
-    return 'Recrutement';
-  }
-  if (description.includes('innovation')) {
-    return 'Innovation';
-  }
-  if (
-    description.includes('machine') ||
-    description.includes('matériel') ||
-    description.includes('réseau') ||
-    description.includes('support')
-  ) {
-    return 'IT';
-  }
-  return 'Others';
+const PROJECTS_LABEL = {
+  IT: 'IT',
+  DITB: 'Deep in the Bowl',
+  MUCKLAS: 'Mucklas',
+  SENTINEL: 'Sentinel',
+  TEAM: 'team.zeilt',
+  ORGANISATION: 'Organisation',
+  NS: 'Nächst Statioun',
+  OFF: 'Congé/Férié',
+  OTHERS: 'Others',
 };
 
-export const convertDescriptionToType = (descriptionRaw) => {
+export const convertRowToProject = (row) => {
+  console.log(row.department.name, row.date);
+  if (['Férié', 'Congé'].includes(row.department.name)) {
+    return 'Congé/Férié';
+  }
+
+  const { description: descriptionRaw } = row;
+
+  if (!descriptionRaw) {
+    return 'Unlabelled';
+  }
+
+  switch (row.production.name) {
+    case 'MUCKLAS':
+      return PROJECTS_LABEL.MUCKLAS;
+    case 'Nächst Statioun Application':
+      return PROJECTS_LABEL.NS;
+    case 'DEEP IN THE BOWL':
+      return PROJECTS_LABEL.DITB;
+  }
+
   const description = descriptionRaw
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(':', ' ')
     .toLowerCase();
 
-  if (description.includes('covid')) {
-    return 'COVID';
-  }
   if (
-    description.includes('td') ||
-    description.includes('hypno') ||
-    description.includes('bocal') ||
-    description.includes('fdb') ||
-    description.includes('squeeze') ||
-    description.includes('cracké') ||
-    description.includes('nächst statioun') ||
-    description.includes('kinépolis') ||
-    description.includes('pipeline') ||
-    description.includes('coalition')
-  ) {
-    return 'TD';
-  }
-  if (description.includes('luxinnovation')) {
-    return 'Luxinnovation';
-  }
-  if (
-    description.includes('sentinel') &&
-    description.includes('commercialisation')
-  ) {
-    if (description.includes('commercialisation')) {
-      return 'Sentinel Commercialisation';
-    }
-    return 'Sentinel';
-  }
-  if (description.includes('innovation')) {
-    return 'Innovation';
-  }
-  if (
-    description.includes('it') ||
-    description.includes('machine') ||
-    description.includes('matériel') ||
-    description.includes('réseau') ||
-    description.includes('support')
-  ) {
-    return 'IT';
-  }
-  if (
-    description.includes('reunion') ||
     description.includes('management') ||
-    description.includes('1:1')
+    description.includes('reunion') ||
+    description.includes('supervision') ||
+    description.includes('organisation')
   ) {
-    return 'Réunion/Management';
+    return PROJECTS_LABEL.ORGANISATION;
   }
-  return 'Others';
+  if (description.includes('sentinel')) {
+    return PROJECTS_LABEL.SENTINEL;
+  }
+  if (description.includes('team.zeilt')) {
+    return PROJECTS_LABEL.TEAM;
+  }
+  if (
+    description.includes('support') ||
+    description.includes('it') ||
+    description.includes('datacenter')
+  ) {
+    return PROJECTS_LABEL.IT;
+  }
+
+  return PROJECTS_LABEL.OTHERS;
+};
+
+// -----------
+
+const PROJECTS_PIPE = [
+  PROJECTS_LABEL.DITB,
+  PROJECTS_LABEL.NS,
+  PROJECTS_LABEL.MUCKLAS,
+];
+
+const LABEL_PROJECTS = Object.keys(PROJECTS_LABEL).reduce((ret, key) => {
+  ret[PROJECTS_LABEL[key]] = key;
+  return ret;
+}, {});
+
+export const convertRowToDepartment = (row) => {
+  const project = convertRowToProject(row);
+
+  if (PROJECTS_PIPE.includes(project)) {
+    return 'Pipe';
+  }
+  if (LABEL_PROJECTS[project]) {
+    return project;
+  }
+  return 'Unknown';
 };

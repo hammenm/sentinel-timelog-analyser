@@ -5,7 +5,6 @@ export default gql`
     tasks(
       where: {
         user: { name: $username }
-        department: { name: "R&D" }
         date_gte: $dateStart
         date_lte: $dateEnd
       }
@@ -13,6 +12,12 @@ export default gql`
       date
       duration
       description
+      production {
+        name
+      }
+      department {
+        name
+       }
     }
   }
 `;

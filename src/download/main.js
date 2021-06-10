@@ -8,9 +8,9 @@ const client = new Client();
 
 const variables = {
   username: 'Maxence Hammen',
-  dateStart: moment('2020-02-12').startOf('day'),
+  dateStart: moment('2021-05-16').startOf('day'),
   dateEnd: moment()
-    .subtract(1, 'day')
+    .subtract(2, 'day')
     .endOf('day'),
 };
 

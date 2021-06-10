@@ -1,6 +1,6 @@
 import fs from 'fs';
 import moment from 'moment';
-import { convertDescriptionToType } from './group';
+import { convertRowToProject, convertRowToDepartment } from './group';
 
 const { AsyncParser } = require('json2csv');
 
@@ -25,15 +25,6 @@ const convertRowDescription = (row) => {
   return row?.description?.replace(/\n/g, ' ');
 };
 
-const convertRowToProject = (row) => {
-  const { description } = row;
-  if (!description) {
-    return 'Unlabelled';
-  }
-
-  return convertDescriptionToType(description);
-};
-
 const fields = [
   'date',
   { label: 'day', value: convertRowToDay },
@@ -44,6 +35,9 @@ const fields = [
   },
   { label: 'description', value: convertRowDescription },
   { label: 'project', value: convertRowToProject },
+  { label: 'category', value: convertRowToDepartment },
+  { label: 'production', value: (row) => row.production.name },
+  { label: 'department', value: (row) => row.department.name },
 ];
 
 const inputPath = 'data/tasks.json';
